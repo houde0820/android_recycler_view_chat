@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidplayground.databinding.ActivityMainBinding
 import com.example.androidplayground.databinding.ItemViewBinding
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
@@ -308,9 +311,10 @@ object MessageApi {
         return flow {
             item.toCharArray()
                 .forEach {
+//                    currentCoroutineContext().ensureActive() // 检查协程是否已取消
                     emit(it.toString())
                     kotlinx.coroutines.delay(10)
                 }
-        }
+        }.cancellable()
     }
 }
